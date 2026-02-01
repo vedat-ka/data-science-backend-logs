@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: .
+    container_name: ml-log-analyzer-backend
+    ports:
+      - "5050:5050"
+    environment:
+      ML_LOG_ANALYZER_PORT: "5050"
+      ML_LOG_ANALYZER_MODEL_DIR: /app/models
+      ML_LOG_ANALYZER_DATA_DIR: /app/data
+      ML_LOG_ANALYZER_ANALYSIS_DIR: /app/analysis
+      ML_LOG_ANALYZER_CORS_ORIGINS: "*"
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./training:/app/training
+      - ./analysis:/app/analysis
+
+  frontend:
+    build: ./frontend
+    container_name: ml-log-analyzer-frontend
+    ports:
+      - "8090:80"
+    depends_on:
+      - backend

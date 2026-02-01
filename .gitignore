@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Data / outputs
+data/
+!data/.gitkeep
+models/
+!models/.gitkeep
+training/
+!training/.gitkeep
+analysis/
+!analysis/.gitkeep
+
+# Logs / OS
+*.log
+.DS_Store
+Thumbs.db
