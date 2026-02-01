@@ -64,13 +64,44 @@ docker compose up --build
 
 ---
 
+## 🧭 Log‑Quellen & Workflow
+
+**Woher kommen die Logs?**
+
+- Datei‑Logs aus deinem Backend/Service (z. B. Rotations‑Logs)
+- Export aus einer Datenbank (z. B. mongoexport JSON / JSONL)
+- Bereits atomisierte JSONL‑Logs aus bestehenden Pipelines
+
+**Workflow (kurz):**
+
+1. Logs nach `data/` kopieren (roh: `.log`/`.txt` oder atomisiert: `.json`/`.jsonl`).
+2. Falls roh → im UI **Atomisieren** starten (erzeugt `.jsonl` in `data/`).
+3. Bei großen Dateien → **Splitten** nutzen (≤ 4 MB‑Chunks in `data/`).
+4. **Analysieren** → Report in `analysis/`, im UI unter **Analyse‑Reports** öffnen.
+5. **Trainieren** → Modelle in `models/`, Report in `training/`.
+
+---
+
 ## 🧪 Training
 
 1. JSONL‑Datei in `data/` ablegen  
 2. Im UI → **Trainieren** starten  
 3. Reports erscheinen unter **Training‑Reports**
 
-Modelle werden dauerhaft in `models/` gespeichert.
+Beim Training werden drei Modelle erstellt (sofern Labels vorhanden sind):
+
+- `models/model_priority.joblib` (Priorität)
+- `models/model_category.joblib` (Kategorie)
+- `models/model_reason.joblib` (Grund/Reason)
+
+Zusätzlich wird `models/meta.json` gespeichert. Dort stehen die
+Trainings‑Metriken (Classification Report) je Modell sowie die verwendete
+Trainingsdatei. Jeder Trainingslauf erzeugt außerdem einen Report in
+`training/` (z. B. `training_20260201T114920Z.json`), der im UI unter
+**Training‑Reports** geöffnet werden kann.
+
+Hinweis: Neue Trainingsläufe **überschreiben** die Modell‑Dateien in
+`models/`, die Reports in `training/` bleiben jedoch erhalten.
 
 ---
 
