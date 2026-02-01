@@ -108,7 +108,7 @@ Hinweis: Neue Trainingsläufe **überschreiben** die Modell‑Dateien in
 ## 🔎 Analyse
 
 1. JSONL‑Datei in `data/` ablegen  
-2. Im UI → **Analysieren**  
+2. Im UI → **Analysieren** (der Ablauf wird vollständig über die UI gesteuert)  
 3. Ergebnisse werden in `analysis/` gespeichert  
 4. **Analyse‑Reports** im UI öffnen
 
