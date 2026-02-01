@@ -4,6 +4,8 @@ const healthStatus = document.getElementById("healthStatus");
 const fileSelect = document.getElementById("fileSelect");
 const reloadFiles = document.getElementById("reloadFiles");
 const analyzeBtn = document.getElementById("analyzeBtn");
+const uploadFileInput = document.getElementById("uploadFileInput");
+const uploadFileBtn = document.getElementById("uploadFileBtn");
 const rawSelect = document.getElementById("rawSelect");
 const reloadRaw = document.getElementById("reloadRaw");
 const atomizeBtn = document.getElementById("atomizeBtn");
@@ -635,6 +637,38 @@ async function analyze() {
   }
 }
 
+async function uploadFile() {
+  const file = uploadFileInput.files[0];
+  if (!file) {
+    summary.innerHTML = "<div class=\"summary-card\"><h3>Hinweis</h3><span>Bitte eine Datei auswählen.</span></div>";
+    return;
+  }
+  uploadFileBtn.disabled = true;
+  uploadFileBtn.textContent = "Lade hoch...";
+  try {
+    const form = new FormData();
+    form.append("file", file);
+    const res = await fetchWithTimeout(`${API_BASE}/upload-file`, {
+      method: "POST",
+      body: form
+    }, 120000);
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Fehler");
+    }
+    summary.innerHTML = `<div class="summary-card"><h3>Upload</h3><span>${data.name} (${Math.round(data.size / 1024)} KB)</span></div>`;
+    showReportModal("Upload", `Datei gespeichert in: data/${data.name}`, data.name);
+    uploadFileInput.value = "";
+    await loadFiles();
+    await loadRawFiles();
+  } catch (err) {
+    summary.innerHTML = `<div class="summary-card"><h3>Fehler</h3><span>${err.message}</span></div>`;
+  } finally {
+    uploadFileBtn.disabled = false;
+    uploadFileBtn.textContent = "Datei hochladen";
+  }
+}
+
 async function atomize() {
   const selected = rawSelect.value;
   const out = outPath.value.trim();
@@ -799,6 +833,7 @@ async function splitFile() {
 
 reloadFiles.addEventListener("click", loadFiles);
 analyzeBtn.addEventListener("click", analyze);
+uploadFileBtn.addEventListener("click", uploadFile);
 reloadRaw.addEventListener("click", loadRawFiles);
 atomizeBtn.addEventListener("click", atomize);
 reloadTrain.addEventListener("click", loadFiles);

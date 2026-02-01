@@ -74,7 +74,7 @@ docker compose up --build
 
 **Workflow (kurz):**
 
-1. Logs nach `data/` kopieren (roh: `.log`/`.txt` oder atomisiert: `.json`/`.jsonl`).
+1. Logs per UI hochladen (roh: `.log`/`.txt` oder atomisiert: `.json`/`.jsonl`).
 2. Falls roh → im UI **Atomisieren** starten (erzeugt `.jsonl` in `data/`).
 3. Bei großen Dateien → **Splitten** nutzen (≤ 4 MB‑Chunks in `data/`).
 4. **Analysieren** → Report in `analysis/`, im UI unter **Analyse‑Reports** öffnen.
@@ -84,7 +84,7 @@ docker compose up --build
 
 ## 🧪 Training
 
-1. JSONL‑Datei in `data/` ablegen  
+1. JSONL‑Datei per UI hochladen (oder in `data/` ablegen)  
 2. Im UI → **Trainieren** starten  
 3. Reports erscheinen unter **Training‑Reports**
 
@@ -107,7 +107,7 @@ Hinweis: Neue Trainingsläufe **überschreiben** die Modell‑Dateien in
 
 ## 🔎 Analyse
 
-1. JSONL‑Datei in `data/` ablegen  
+1. JSONL‑Datei per UI hochladen (oder in `data/` ablegen)  
 2. Im UI → **Analysieren** (der Ablauf wird vollständig über die UI gesteuert)  
 3. Ergebnisse werden in `analysis/` gespeichert  
 4. **Analyse‑Reports** im UI öffnen

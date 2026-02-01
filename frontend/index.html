@@ -18,13 +18,18 @@
 
       <div class="panel-grid panel-grid-wide">
         <section class="panel">
-          <h2>Analysieren</h2>
+          <h2>Raw-Logs laden und atomisieren</h2>
           <div class="controls">
-            <select id="fileSelect"></select>
-            <button id="reloadFiles">Dateien neu laden</button>
-            <button class="primary" id="analyzeBtn">Analysieren</button>
+            <select id="rawSelect"></select>
+            <input id="outPath" type="text" placeholder="z.B. logs_from_raw.jsonl" />
+            <button id="reloadRaw">Raw-Dateien neu laden</button>
+            <button class="primary" id="atomizeBtn">Atomisieren</button>
           </div>
-          <div class="hint">Es werden Dateien aus dem Ordner <strong>data/</strong> verwendet.</div>
+          <div class="controls">
+            <input id="uploadFileInput" type="file" accept=".jsonl,.json,.log,.txt,.html" />
+            <button id="uploadFileBtn">Datei hochladen</button>
+          </div>
+          <div class="hint">Erstellt aus .txt/.log eine JSONL-Datei im Ordner <strong>data/</strong>. Uploads werden ebenfalls in <strong>data/</strong> gespeichert und im Popup angezeigt.</div>
         </section>
 
         <section class="panel">
@@ -40,6 +45,16 @@
 
       <div class="panel-grid panel-grid-wide">
         <section class="panel">
+          <h2>Analysieren</h2>
+          <div class="controls">
+            <select id="fileSelect"></select>
+            <button id="reloadFiles">Dateien neu laden</button>
+            <button class="primary" id="analyzeBtn">Analysieren</button>
+          </div>
+          <div class="hint">Es werden Dateien aus dem Ordner <strong>data/</strong> verwendet.</div>
+        </section>
+
+        <section class="panel">
           <h2>Training-Reports</h2>
           <div class="controls">
             <select id="reportSelect"></select>
@@ -48,7 +63,9 @@
           </div>
           <div class="hint">Gespeicherte Reports aus <strong>training/</strong> anzeigen.</div>
         </section>
+      </div>
 
+      <div class="panel-grid panel-grid-wide">
         <section class="panel">
           <h2>Analyse-Reports</h2>
           <div class="controls">
@@ -57,19 +74,6 @@
             <button class="primary" id="openAnalysis">Report öffnen</button>
           </div>
           <div class="hint">Gespeicherte Reports aus <strong>analysis/</strong> anzeigen.</div>
-        </section>
-      </div>
-
-      <div class="panel-grid panel-grid-wide">
-        <section class="panel">
-          <h2>Raw-Logs atomisieren</h2>
-          <div class="controls">
-            <select id="rawSelect"></select>
-            <input id="outPath" type="text" placeholder="z.B. logs_from_raw.jsonl" />
-            <button id="reloadRaw">Raw-Dateien neu laden</button>
-            <button class="primary" id="atomizeBtn">Atomisieren</button>
-          </div>
-          <div class="hint">Erstellt aus .txt/.log eine JSONL-Datei im Ordner <strong>data/</strong>.</div>
         </section>
 
         <section class="panel">

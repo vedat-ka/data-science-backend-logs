@@ -5,6 +5,7 @@ from typing import List, Dict, Any, Optional
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from werkzeug.utils import secure_filename
 import joblib
 
 from train import train_models, MODEL_FILES, META_FILE, build_text
@@ -26,6 +27,8 @@ _models = {
     "reason": None,
     "meta": None
 }
+
+_UPLOAD_EXTENSIONS = {".jsonl", ".json", ".log", ".txt", ".html"}
 
 
 def _safe_join_data(path_value: str) -> Optional[str]:
@@ -172,6 +175,32 @@ def train_endpoint():
         json.dump(result, fh, indent=2)
     _load_models()
     return jsonify({"ok": True, "result": result, "report_file": report_name})
+
+
+@app.post("/upload-file")
+def upload_file():
+    if "file" not in request.files:
+        return jsonify({"error": "file is required"}), 400
+    file = request.files.get("file")
+    if not file or not file.filename:
+        return jsonify({"error": "file is required"}), 400
+
+    filename = secure_filename(file.filename)
+    if not filename:
+        return jsonify({"error": "invalid filename"}), 400
+
+    ext = os.path.splitext(filename)[1].lower()
+    if ext not in _UPLOAD_EXTENSIONS:
+        allowed = ", ".join(sorted(_UPLOAD_EXTENSIONS))
+        return jsonify({"error": f"unsupported file type. Allowed: {allowed}"}), 400
+
+    os.makedirs(DATA_DIR, exist_ok=True)
+    dest = _safe_join_data(filename)
+    if not dest:
+        return jsonify({"error": "invalid destination"}), 400
+
+    file.save(dest)
+    return jsonify({"ok": True, "name": filename, "size": os.path.getsize(dest)})
 
 
 @app.get("/data-files")
