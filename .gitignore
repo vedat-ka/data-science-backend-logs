@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 .venv/
 
+# Env
+.env
+
 # Data / outputs
 data/
 !data/.gitkeep
